@@ -2,7 +2,7 @@ import React from "react";
 
 const style = {
   border: "2px solid black",
-  padding: '5px 0 5px 10px',
+  padding: "5px 0 5px 10px",
 };
 
 const UserCard = ({ user }) => {

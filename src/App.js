@@ -1,29 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import CardCollection from './card-collections';
-import SearchBar from './search-bar';
+import React, { useState, useEffect } from "react";
+import CardCollection from "./card-collections";
+import SearchBar from "./search-bar";
 
 const style = {
-  display: 'flex',
-  flexDirection: 'column',
+  display: "flex",
+  flexDirection: "column",
   alignItems: "center",
-  rowGap: '10px'
-}
+  rowGap: "10px",
+};
 
 export default function App() {
   const [userList, setUserList] = useState([]);
   const [filteredUserList, setFilteredUserList] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+
+  // promise version
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/users')
+  //   .then((response) => response.json())
+  //   .then((json) =>setUserList(json));
+  // },[]);
+
+  // async await version
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+      const users = await response.json();
+      setUserList(users);
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then((response) => response.json())
-    .then((json) =>setUserList(json));
-  },[]);
-
-  useEffect(() => {
-    const filteredList = userList.filter((user) => user.name.includes(searchText));
+    const filteredList = userList.filter((user) =>
+      user.name.includes(searchText)
+    );
     setFilteredUserList(filteredList);
-  }, [searchText, userList])
+  }, [searchText, userList]);
 
   const onSearchChange = (e) => {
     setSearchText(e.target.value);
